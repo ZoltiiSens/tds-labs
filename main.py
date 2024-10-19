@@ -78,7 +78,7 @@ def main():
 
     # Вибір способу очищення вхідних даних, очищеня, статистичні характеристики та графік
     user_answer = input('Оберіть спосіб очищення даних від аномальних вимірів:\n * 0 - sliding_wind\n * 1 - medium\n * '
-                        '2 - modified_mnk\n3 - my_alg1\n4 - my_alg2\n5 - my_alg3\nEnter: ')
+                        '2 - modified_mnk\n * 3 - my_alg1\n * 4 - my_alg2\n * 5 - my_alg3\nEnter: ')
     if user_answer == '0':
         y_model_cleared = sliding_wind(y_model, window_n=WINDOW_SIZE)
     elif user_answer == '1':
@@ -110,7 +110,7 @@ def main():
 
     stat_characteristics(y_model_cleared, y_values_model, 'ОЧИЩЕНОЇ МОДЕЛІ', coef_of_det=True)
     plot_two_charts(x_values_real, y_model_cleared, y_values_model, 'Модель очищена', 'Модель',
-                    title='Модель з шумом та аномальними помилками')
+                    title='Очищена модель')
 
     # Отримання екстрополяційної моделі за МНК, її графік
     if model_degree == 1:
@@ -129,8 +129,7 @@ def main():
                       'Вхідний МНК тренд', 'Екстраполяція за МНК')
 
     # Вибір фільтру Калмана, фільтрація, побудова графіку та отримання статистичних характеристик
-    user_answer = input('Оберіть тип фільтру:\n * 0 - alpha-beta\n * 1 - alpha-beta-gamma\n * 2 - модифікований МНК'
-                        '\nEnter: ')
+    user_answer = input('Оберіть тип фільтру:\n * 0 - alpha-beta\n * 1 - alpha-beta-gamma\nEnter: ')
     if user_answer == '0':
         y_model_filtered = alpha_beta(y_model)
         filter_type = 'alpha-beta'
@@ -201,7 +200,7 @@ def mnk_modified(y_values, window_n=5, Q=0.0015, degree=3):
 
 def my_AV_cleaning_algorythm1(y_values, window_n=10, Q1=1.5, Q2=1.5):
     """
-    Робота цього алгоритму схожа на роботу звичайного sliding_window, проте відрізняється від нього тим, що очищаються
+    Робота цього алгоритму схожа на роботу звичайного medium, проте відрізняється від нього тим, що очищаються
     тільки значення, що є найменшими бо найбільшими на проміжку для уточнення результатів. Це зменншує кількість
     очищених значень, проте уточнює їх. Після основного проходження алгоритму, задля уточнення результатів, відбуваєтсья
     зворотній хід
