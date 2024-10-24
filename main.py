@@ -6,11 +6,6 @@
 
 import pandas as pd
 from ortools.sat.python import cp_model
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib
-
-matplotlib.use('TkAgg')
 
 
 def main():
@@ -21,7 +16,7 @@ def main():
     weights_normalized = []
     weights_sum = sum(weights)
     for weight in weights:
-        weights_normalized.append(weight/weights_sum)
+        weights_normalized.append(1/weight/weights_sum)
 
     # Нормалізація критеріїв
     criteria_matrix_normalized = []
@@ -116,6 +111,40 @@ def additional_task():
         print('X4= ', X4_out)
         print('X5= ', X5_out)
         print('X6= ', X6_out)
+
+
+
+# Оптимізаційна модель
+model = cp_model.CpModel()
+
+# Змінні з верхньою межею для кожної з них
+var_upper_bound = 10000
+X1 = model.NewIntVar(0, var_upper_bound, 'X1')
+X2 = model.NewIntVar(0, var_upper_bound, 'X2')
+X3 = model.NewIntVar(0, var_upper_bound, 'X3')
+
+# Обмеження
+model.Add(10 * X1 + 20 * X2 + 3 * X3 <= 1000)
+model.Add(5 * X1 + 4 * X2 + 1 * X3 <= 500)
+model.Add(X1 >= 50)
+model.Add(X2 >= 10)
+model.Add(X3 >= 11)
+
+# Цільова функція ефективності
+model.Minimize(10 * X1 + 20 * X2 + 3 * X3)
+
+# Вирішувач
+solver = cp_model.CpSolver()
+status = solver.Solve(model)
+
+if status == cp_model.OPTIMAL:
+    print(f'Результат мінімізованого значення: {solver.ObjectiveValue()}')
+    X1_out = solver.Value(X1)
+    X2_out = solver.Value(X2)
+    X3_out = solver.Value(X3)
+    print('X1= ', X1_out)
+    print('X2= ', X2_out)
+    print('X3= ', X3_out)
 
 
 # Вхід у програму
