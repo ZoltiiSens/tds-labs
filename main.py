@@ -17,6 +17,7 @@ speech_recognizer = Recognizer()
 
 
 def main():
+    # Отримання типу джерела тексту від користувача, його добування
     user_answer = input('Оберіть джерело тексту:\n * 0 - ввести вручну\n * 1 - файл(txt)\n * 2 - фото(png)\n * 3 - аудіо-файл(wav)\n * 4 - парсинг\nEnter: ')
     if user_answer == '0':
         input_text = ask_user_for_text_from_input()
@@ -31,17 +32,23 @@ def main():
     else:
         print('Помилка при введенні!')
         return
+
+    # Невелика "очистка" тексту
     input_text = input_text.replace('\n', ' ').replace('\t', '').lower()
     print(f'Отриманий текст:\n{input_text}')
     print('Запит до LLM...')
+
+    # Отримання результатів класифікації від LLM моделі
     classification_result = ask_LLM_to_classify_text(input_text)
     print(f'Результат класифікації: {classification_result}')
 
 
+# Функція отримання тексту від користувача через консоль
 def ask_user_for_text_from_input() -> str:
     return input('Введіть текст(без переходів на нову строку): ')
 
 
+# Функція отримання тексту від користувача з файлу .txt
 def ask_user_for_text_from_file() -> str:
     path = get_path_by_user('txt')
     with open(path, 'r') as f:
@@ -49,12 +56,14 @@ def ask_user_for_text_from_file() -> str:
     return text
 
 
+# Функція отримання тексту від користувача з фото .png
 def ask_user_for_text_from_photo() -> str:
     path = get_path_by_user('png')
     text = pytesseract.image_to_string(Image.open(path), lang='ukr')
     return text
 
 
+# Функція отримання тексту від користувача з аудіо .wav
 def ask_user_for_text_from_audio() -> str:
     path = get_path_by_user('wav')
     audio_file = AudioFile(path)
@@ -68,6 +77,7 @@ def ask_user_for_text_from_audio() -> str:
     return text
 
 
+# Функція отримання тексту від користувача з веб-сторінки
 def ask_user_for_text_from_web() -> str:
     url = input("Введіть URL інтернет-ресурсу: ")
     try:
@@ -87,6 +97,7 @@ def ask_user_for_text_from_web() -> str:
         exit(-1)
 
 
+# Функція отримання шляху до файлу від користувача із заданим розширенням файлу
 def get_path_by_user(extension):
     user_answer = input(f'Введіть шлях до файлу {extension}(відносний або абсолютний): ')
     if user_answer.split('.')[-1] != extension:
@@ -99,6 +110,7 @@ def get_path_by_user(extension):
     return path
 
 
+# Функція класифікації тексту з використанням LLM-моделей - "безкоштовних" версій GPT-4o
 def ask_LLM_to_classify_text(text):
     client = Client(
         provider=RetryProvider([Liaobots, AmigoChat, Blackbox, ChatGptEs, DarkAI, Editee, AiMathGPT, Pizzagpt],
@@ -135,7 +147,6 @@ def ask_LLM_to_classify_text(text):
             }
         ]
     )
-    print()
     return response.choices[0].message.content
 
 
