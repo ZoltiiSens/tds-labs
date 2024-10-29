@@ -7,13 +7,11 @@ from speech_recognition import Recognizer, AudioFile
 from bs4 import BeautifulSoup
 from g4f.client import Client
 from g4f.Provider import RetryProvider, Liaobots, AiMathGPT, AmigoChat, Blackbox, ChatGptEs, DarkAI, Editee, Pizzagpt
-import g4f.debug
 from PIL import Image
 
 
 # Необхідна конфігурація
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-# g4f.debug.version_check = False
 pytesseract.pytesseract.tesseract_cmd = r'E:\Programs\Tesseract-OCR\tesseract.exe'
 speech_recognizer = Recognizer()
 
