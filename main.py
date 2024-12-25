@@ -1,3 +1,11 @@
+"""
+Виконав: Литвиненко Роман
+Лабораторна робота №6, III рівень складності
+Класифікувати та ідентифікувати об’єкти в обраному відеопотоці з використанням технологій штучних нейронних мереж.
+Об’єкти, що підлягають ідентифікації та кокретику відеопотоку обрати самостійно, наприклад як вихідні дані лабораторної
+робіти із машинного навчання (обробка цифрових зображень).
+"""
+
 from ultralytics import YOLO
 import cv2
 
@@ -26,7 +34,7 @@ def main():
                     cls_id = int(box.cls[0].item())
                     detections.append(((x1, y1, x2 - x1, y2 - y1), conf, cls_id))
         # Візуалізація результатів
-        for (box, confidence, class_id, index) in detections:
+        for (box, confidence, class_id) in detections:
             x, y, w, h = box
             label = f'{yolo_model.names[class_id]} @ {confidence:.1f}'
             color = (0, 255, 0)
