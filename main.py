@@ -95,7 +95,7 @@ def main():
 
     # Пошук шахраїв к використанням моделей KNN, PCA та StandardScaler
     transposed_criteria_matrix_normalized = list(map(list, zip(*criteria_matrix_normalized)))
-    outliers_fraction = 0.05
+    outliers_fraction = 1 - good_cs_coutnter / len(integro)
     X = transposed_criteria_matrix_normalized
     clf = KNN(contamination=outliers_fraction)
     clf.fit(X)
