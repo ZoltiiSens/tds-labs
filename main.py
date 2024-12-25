@@ -8,15 +8,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
-from sklearn.cluster import KMeans
 from shapely.geometry import Point
 matplotlib.use('TkAgg')
 
 
 def main():
     # Завантаження даних
-    filename = "Fire_Stations/Fire_Stations.shp"
-    fire_stations = gpd.read_file(filename)
+    fire_stations = gpd.read_file("Fire_Stations/Fire_Stations.shp")
 
     # Перевірка завантажених даних
     print(fire_stations.head())
@@ -50,7 +48,7 @@ def main():
     average_distance = np.sum(distance_matrix) / (n_stations * (n_stations - 1))
     print(f"Середня відстань між пожежними станціями: {average_distance:.2f} км")
 
-    # Визначення центроїдів найбільш густо населених районів
+    # Визначення центроїдів найбільш густо населених станціями районів
     # Переведення в проєкцію для аналізу на площині
     fire_stations = fire_stations.to_crs("EPSG:5070")
 
@@ -122,7 +120,7 @@ def level2_try():
     print(3)
 
     # Ввід карти
-    base = geo_df.plot(figsize=(10, 10), color='blue', markersize=50, legend=True)
+    geo_df.plot(figsize=(10, 10), color='blue', markersize=50, legend=True)
     plt.title("Мапа щільності населення")
     plt.xlabel("X")
     plt.ylabel("Y")
